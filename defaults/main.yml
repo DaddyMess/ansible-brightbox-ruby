@@ -1,0 +1,4 @@
+brightbox_ruby_version: 2.3
+brightbox_ruby_gems:
+  - bundler
+  - foreman

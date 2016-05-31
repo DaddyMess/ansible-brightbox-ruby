@@ -1,0 +1,64 @@
+---
+  - name: install dependencies
+    tags:
+      - ruby
+      - dependencies
+    become: yes
+    apt: pkg={{ item }} state=installed update_cache=true
+    with_items:
+      - autoconf
+      - git
+      - bison
+      - libffi-dev
+      - zlib1g-dev
+      - libssl-dev
+      - libreadline6-dev
+      - libyaml-dev
+      - libxml2-dev
+      - libxslt1-dev
+      - libcurl4-openssl-dev
+      - libpq-dev
+      - imagemagick
+      - libmagickcore-dev
+      - libmagickwand-dev
+      - nodejs
+      - libgmp-dev
+      - libncurses5-dev
+      - libgdbm3
+      - libgdbm-dev
+      - software-properties-common
+
+  - name: add brightbox repo
+    become: yes
+    apt_repository:
+      repo="ppa:brightbox/ruby-ng"
+      state=present
+
+  - name: install ruby
+    become: yes
+    tags:
+      - ruby
+    apt: name={{ item }} update_cache=yes state=present
+    with_items:
+      - ruby{{ brightbox_ruby_version }}
+      - ruby{{ brightbox_ruby_version }}-dev
+      - libruby{{ brightbox_ruby_version }}
+      - ruby-switch
+
+  - name: add global rdoc options
+    become: yes
+    tags:
+      - ruby
+      - config
+    copy:
+      src: gemrc
+      dest: /etc/gemrc
+
+  - name: switch ruby
+    become: yes
+    shell: ruby-switch --set ruby{{ brightbox_ruby_version }}
+
+  - name: install gems
+    become: yes
+    shell: gem{{ brightbox_ruby_version }} install {{ item }}
+    with_items: brightbox_ruby_gems
