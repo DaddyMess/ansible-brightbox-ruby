@@ -1,0 +1,18 @@
+---
+  dependencies: []
+
+  galaxy_info:
+    author: Kieran Johnson
+    description: An Ansible role for installing Ruby from Brightbox PPA.
+    company: Invisiblelines Ltd.
+    license: MIT
+    min_ansible_version: 1.9
+    platforms:
+      - name: Ubuntu
+        versions:
+          - trusty
+          - wily
+    galaxy_tags:
+      - development
+      - web
+      - ruby
